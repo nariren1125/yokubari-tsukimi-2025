@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    margin: 0;              /* 余白ゼロ（白縁防止） */
+  }
+  
+  .bg-only {
+    position: fixed;        /* 常に画面全体 */
+    inset: 0;               /* top/right/bottom/left: 0 */
+    background-size: cover; /* 画面いっぱいにトリミング */
+    background-position: center; /* 画像の重心を中央に */
+    background-repeat: no-repeat;
+  }
+  
+  /* 既存のグラデが残っていたら消す */
+  .moon-page { background: none !important; }
+  

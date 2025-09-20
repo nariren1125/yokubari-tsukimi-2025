@@ -1,23 +1,28 @@
-<div class="hero-section">
-  <h1>🌙 欲張り月見アプリ 🌙</h1>
-  <p>秋の夜長に楽しむ、月見商品の総合サイトです</p>
-  
-  <div class="features">
-    <div class="feature-card">
-      <h3>🥮 月見商品一覧</h3>
-      <p>様々な月見商品をチェック</p>
-    </div>
-    
-    <div class="feature-card">
-      <h3>⭐ お気に入り機能</h3>
-      <p>気になる商品をお気に入りに追加</p>
-    </div>
-    
-    <div class="feature-card">
-      <h3>📝 レビュー機能</h3>
-      <p>商品の感想を共有しよう</p>
-    </div>
+<div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+
+<div class="ui-layer">
+  <div class="btn-row">
+    <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
+      <%= image_tag "btn_dessert.png", alt: "デザート" %>
+    </button>
+    <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
+      <%= image_tag "btn_gohan.png", alt: "ごはん" %>
+    </button>
+    <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
+      <%= image_tag "btn_goods.png", alt: "グッズ" %>
+    </button>
   </div>
-  
-  <%= link_to "商品一覧を見る", "#", class: "btn btn-primary" %>
 </div>
+
+<!-- かんたんな反応（トースト） -->
+<script>
+  window.onCategoryClick = function(type){
+    const label = {dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = `${label} を選びました`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(()=>toast.classList.add('show'));
+    setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(), 250); }, 1200);
+  };
+</script>
