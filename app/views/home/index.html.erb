@@ -1,0 +1,28 @@
+<div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+
+<div class="ui-layer">
+  <div class="btn-row">
+    <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
+      <%= image_tag "btn_dessert.png", alt: "デザート" %>
+    </button>
+    <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
+      <%= image_tag "btn_gohan.png", alt: "ごはん" %>
+    </button>
+    <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
+      <%= image_tag "btn_goods.png", alt: "グッズ" %>
+    </button>
+  </div>
+</div>
+
+<!-- かんたんな反応（トースト） -->
+<script>
+  window.onCategoryClick = function(type){
+    const label = {dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = `${label} を選びました`;
+    document.body.appendChild(toast);
+    requestAnimationFrame(()=>toast.classList.add('show'));
+    setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(), 250); }, 1200);
+  };
+</script>
