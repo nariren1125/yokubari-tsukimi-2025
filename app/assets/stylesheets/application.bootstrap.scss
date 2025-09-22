@@ -3,3 +3,162 @@
 
 @import "bg_only";
 @import "buttons";
+
+/* ===== レイアウト用の変数（ここを触るだけで微調整できます） ===== */
+:root{
+    /* より中央寄りの位置に調整 */
+    --card-top: 100x;
+    --card-width: min(90vw, 600px);
+    --button-zone: clamp(100px, 20vmin, 180px);
+    --buttons-bottom: clamp(20px, 3vmin, 40px);
+}
+  
+/* ===== 商品カード（統合版） ===== */
+.product-card {
+  position: fixed !important; /* 最初から fixed */
+  left: 50% !important;
+  top: var(--card-top) !important; /* top を変数で制御 */
+  bottom: auto !important;
+  
+  width: var(--card-width);
+  min-height: clamp(180px, 22vmin, 300px);
+  max-height: calc(100vh - var(--card-top) - 140px);
+  overflow-y: auto;
+  
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: #222;
+  padding: 24px 32px;
+  border-radius: 12px;
+  border: 3px solid rgba(255,255,255,.9);
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  z-index: 9999 !important; /* 最初から高い値 */
+  
+  /* スクロール体験の向上 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.3) transparent;
+  scroll-behavior: smooth;
+  
+  /* アニメーション（非表示状態） */
+  opacity: 0;
+  transform: translate(-50%, -20px);
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* WebKit系ブラウザ用のスクロールバー */
+.product-card::-webkit-scrollbar {
+    width: 6px;
+}
+
+.product-card::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.product-card::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.3);
+    border-radius: 3px;
+}
+
+.product-card::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,.5);
+}
+
+/* 表示状態 */
+.product-card.show {
+    position: fixed !important;
+    left: 50% !important;
+    top: var(--card-top) !important;
+    opacity: 1 !important;
+    transform: translate(-50%, 0) !important;
+    pointer-events: auto !important;
+    z-index: 9999 !important; /* 大幅に上げる */
+}
+
+/* 商品画像のスタイル */
+.product-card img{
+    display: block;
+    margin: 16px auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 40vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+
+/* ===== ウサギ＋ボタン（下中央・最前面） ===== */
+.ui-layer{
+    /* inset: 0 の top だけを上書き（他はそのまま活用） */
+    top: auto !important;
+    /* bottom の計算を独自のものに変更 */
+    padding-bottom: var(--buttons-bottom) !important;
+    /* z-index を商品カードより下に */
+    z-index: 999 !important;
+}
+
+.btn-row{
+    display: flex; 
+    gap: clamp(16px, 3vmin, 36px);
+    align-items: flex-end; 
+    justify-content: center;
+}
+
+.img-btn{ 
+    background: transparent; 
+    border: 0; 
+    padding: 0; 
+    cursor: pointer; 
+}
+
+.img-btn img{
+    width: clamp(120px, 20vmin, 180px);
+    height: auto; 
+    display: block;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,.35));
+}
+  
+/* トースト（ボタンの少し上、クリック邪魔しない） */
+.toast{
+    pointer-events: none;
+    position: fixed; 
+    left: 50%;
+    bottom: calc(var(--button-zone) + var(--buttons-bottom) + 16px);
+    transform: translateX(-50%);
+}
+
+/* ===== レスポンシブ対応の強化 ===== */
+/* スマホ向けの調整 */
+@media (max-height: 600px) {
+    :root {
+        --card-top: 60px;
+        --button-zone: 80px;
+        --buttons-bottom: 16px;
+    }
+    
+    .product-card {
+        padding: 16px 20px;
+        max-height: calc(100vh - 180px);
+    }
+}
+
+/* タブレット向けの調整 */
+@media (min-height: 800px) {
+    :root {
+        --card-top: 120px;
+    }
+}
+
+/* 横画面スマホ対応 */
+@media (max-height: 500px) and (orientation: landscape) {
+    :root {
+        --card-top: 40px;
+        --button-zone: 60px;
+        --buttons-bottom: 12px;
+    }
+    
+    .product-card {
+        padding: 12px 16px;
+        max-height: calc(100vh - 140px);
+    }
+}
