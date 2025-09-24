@@ -1,73 +1,220 @@
-<div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>月見バーガー特設サイト</title>
+  
+  <!-- CSSスタイル -->
+  <style>
+    /* 商品詳細情報のレイアウト */
+    .item-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .item-details, .share-section {
+      flex: 1;
+      min-width: 150px;
+    }
+    
+    .center-section {
+      flex: 0 0 auto;
+      text-align: center;
+    }
+    
+    .share-section {
+      text-align: right;
+    }
+    
+    .maker, .period {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+    
+    .tweet-btn {
+      background: #1DA1F2;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    
+    .tweet-btn:hover {
+      background: #0d8bd9;
+    }
+    
+    .official-link-btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 15px;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .official-link-btn:hover {
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    .no-link-note {
+      color: #666;
+      font-style: italic;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    
+    .image-note {
+      color: #666;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
 
-<!-- 商品表示エリア（独立して配置） -->
-<div id="product-card" class="product-card" hidden></div>
+  <!-- 商品表示エリア（独立して配置） -->
+  <div id="product-card" class="product-card" hidden></div>
 
-<div class="ui-layer">
-  <div class="btn-row">
-    <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
-      <%= image_tag "btn_dessert.png", alt: "デザート" %>
-    </button>
-    <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
-      <%= image_tag "btn_gohan.png", alt: "ごはん" %>
-    </button>
-    <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
-      <%= image_tag "btn_goods.png", alt: "グッズ" %>
-    </button>
+  <div class="ui-layer">
+    <div class="btn-row">
+      <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
+        <%= image_tag "btn_dessert.png", alt: "デザート" %>
+      </button>
+      <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
+        <%= image_tag "btn_gohan.png", alt: "ごはん" %>
+      </button>
+      <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
+        <%= image_tag "btn_goods.png", alt: "グッズ" %>
+      </button>
+    </div>
   </div>
-</div>
 
-<!-- 既存のJavaScript -->
+<!-- 外部ファイルを読み込む -->
+<script src="/data/dessert_data.js"></script>
+<script src="/data/meal_data.js"></script>
+<script src="/data/goods_data.js"></script>
+
+<!-- ★ 修正されたJavaScript（既存CSSに合わせる） -->
 <script>
-  // 画像パスをRails側で解決（存在するものだけ列挙）
+  // デバッグ用コード（修正版）
+  console.log('=== ファイル読み込み確認 ===');
+  console.log('DESSERT_DATA:', typeof DESSERT_DATA !== 'undefined' ? DESSERT_DATA : 'undefined');
+  
+  // 画像パス
   const IMG = {
-    "moon_burger.png":  "<%= image_path('moon_burger.png') %>",
-    "moon_parfait.png": "<%= image_path('moon_parfait.png') %>",
-    "moon_goods.png":   "<%= image_path('moon_goods.png') %>"
+    "dessert_mac.png": "<%= image_path('dessert_mac.png') %>",
+    "dessert_lotte.png": "<%= image_path('dessert_lotte.png') %>",
+    "dessert_papa.png": "<%= image_path('dessert_papa.png') %>",
+    "moon_burger.png": "<%= image_path('moon_burger.png') %>",
+    "moon_goods.png": "<%= image_path('moon_goods.png') %>"
   };
 
-  // とりあえずの"商品DB"（あとで増やせます）
+  // 商品データベース
   const DB = {
-    dessert: [
-      { name: "月見パフェ",  desc: "夜空色ゼリーと白玉のパフェ。", img: "moon_parfait.png" }
-    ],
-    meal: [
-      { name: "月見バーガー", desc: "半熟風たまごが主役のバーガー。", img: "moon_burger.png" }
-    ],
-    goods: [
-      { name: "お月見マグ",  desc: "ウサギ刻印の陶器マグ。", img: "moon_goods.png" }
-    ]
+    dessert: typeof DESSERT_DATA !== 'undefined' ? DESSERT_DATA.map(item => {
+      console.log('処理中:', item.name, 'リンク:', item.officialLink);
+      return {
+        ...item,
+        officialLink: item.officialLink || null
+      };
+    }) : [],
+    
+    meal: typeof MEAL_DATA !== 'undefined' ? MEAL_DATA.map(item => ({
+      ...item,
+      officialLink: item.officialLink || null
+    })) : [],
+    
+    goods: typeof GOODS_DATA !== 'undefined' ? GOODS_DATA.map(item => ({
+      ...item,
+      officialLink: item.officialLink || null
+    })) : []
   };
+
+  // デバッグ用コード（修正版）
+  console.log('=== DB構造確認 ===');
+  console.log('DB keys:', Object.keys(DB));
+  console.log('dessert exists:', 'dessert' in DB);
+  console.log('dessert length:', DB.dessert ? DB.dessert.length : 'undefined');
 
   function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-  // ボタンクリック時：商品カードを生成して表示
+  // ★ 新しいレイアウトに対応したカード生成
   window.onCategoryClick = function(type){
+    console.log('onCategoryClick called with:', type); // デバッグ追加
+    
     const list = DB[type] || [];
     if (!list.length) {
       showToast("準備中です");
       return;
     }
+    
     const item = pickRandom(list);
+    console.log('Selected item:', item); // デバッグ追加
+    
     const card = document.getElementById('product-card');
-    const imgTag = item.img && IMG[item.img] ? `<img src="${IMG[item.img]}" alt="">` : "";
+    const imgTag = item.img && IMG[item.img] ? `<img src="${IMG[item.img]}" alt="${item.name}">` : "";
+
+    // 公式リンクボタンまたは注意書きを生成
+    const officialContent = item.officialLink 
+      ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
+      : `<p class="no-link-note">公式リンクは準備中です</p>`;
 
     card.innerHTML = `
       <h2>${item.name}</h2>
       <p class="desc">${item.desc}</p>
       ${imgTag}
+      
+      <!-- ★ 3列レイアウト：左（商品情報）｜中央（Xボタン）｜右（画像注意+公式リンク） -->
+      <div class="item-info-row">
+        <!-- 左側：商品詳細情報 -->
+        <div class="item-details">
+          <p class="maker">メーカー: ${item.maker || 'メーカー情報なし'}</p>
+          <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
+        </div>
+        
+        <!-- 中央：Xボタン -->
+        <div class="center-section">
+          <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
+            <span class="x-icon">𝕏</span> 投稿
+          </button>
+        </div>
+        
+        <!-- 右側：画像注意書き＋公式リンク -->
+        <div class="share-section">
+          <p class="image-note">画像はイメージです。<br>詳しくは↓をクリック</p>
+          ${officialContent}
+        </div>
+      </div>
     `;
+    
     card.hidden = false;
-    card.classList.remove('show'); // 再クリック時の軽いアニメ用
+    card.classList.remove('show');
     requestAnimationFrame(()=>card.classList.add('show'));
 
-    // 既存のトーストも出す（任意）
     showToast(`${labelOf(type)} を選びました`);
   };
 
+  // X投稿機能
+  function shareToX(tweetText) {
+    const url = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(url, '_blank', 'width=550,height=420');
+  }
+
   function labelOf(type){ return ({dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type); }
 
-  // 既存トースト（少し共通化）
+  // 既存トースト
   function showToast(text){
     const toast = document.createElement('div');
     toast.className = 'toast';
@@ -77,3 +224,5 @@
     setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(), 250); }, 1200);
   }
 </script>
+</body>
+</html>
