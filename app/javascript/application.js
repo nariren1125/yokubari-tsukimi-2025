@@ -2,3 +2,6 @@
 import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
+
+// 画像管理機能を追加
+import "./image_manager"

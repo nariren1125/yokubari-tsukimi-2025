@@ -4,6 +4,9 @@
 @import "bg_only";
 @import "buttons";
 
+// コンポーネント
+@import "components/product_card";
+
 /* ===== レイアウト用の変数（ここを触るだけで微調整できます） ===== */
 :root{
     /* より中央寄りの位置に調整 */
@@ -81,7 +84,7 @@
     margin: 16px auto;
     max-width: 100%;
     height: auto;
-    max-height: 40vh;
+    max-height: 20vh;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,.15);

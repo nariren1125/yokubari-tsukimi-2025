@@ -2,3 +2,9 @@
 //= link_tree ../../javascript .js
 //= link_tree ../../../vendor/javascript .js
 //= link_tree ../builds
+//= link data/dessert_data.js
+//= link data/meal_data.js
+//= link data/goods_data.js
+//= link main.js
+//= link_directory ../stylesheets .css
+//= link components/products.css
