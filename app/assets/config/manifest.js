@@ -7,4 +7,3 @@
 //= link data/goods_data.js
 //= link main.js
 //= link_directory ../stylesheets .css
-//= link components/products.css
