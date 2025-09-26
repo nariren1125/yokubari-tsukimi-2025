@@ -22,8 +22,89 @@ const MEAL_DATA = [
     desc: "今年は“裏月見”の新商品として、ボリューム感を重視した「メンチカツチーズバーガー」を発売します。今回は、メンチカツとチーズを合わせることで全体の旨みを最大限に引き出す一品に仕上げました。秋の期間限定商品としては、もう一つの定番「バーベキューフォカッチャ」と合わせて、全3品のラインアップです。",
     img: "<%= image_path('meal/meal_mos.png') %>",
     maker: "モスバーガー",
-    period: "9月10日〜11月中旬まで",
+    period: "9月10日〜11月中旬",
     tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
     officialLink: "https://www.mos.jp/oc/autumn202509/"
-  }
+  },
+  {
+    name: "お月見フルムーンバーガー",
+    desc: "大きなバンズに、レタスとジューシーなハンバーグ、チーズ、満月をイメージしたエッグオムレツ。トマトのほどよい酸味と玉ねぎの甘味のバランスが絶妙なソースをかけた、奥深い味わいをお楽しみください。",
+    img: "<%= image_path('meal/meal_komeda.png') %>",
+    maker: "コメダ珈琲",
+    period: "9月3日〜10月中旬",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://www.komeda.co.jp/news/detail.html?cat=2&article=9356689"
+  },
+  {
+    name: "月見ハンバーグと月見マヨポテト",
+    desc: "今年の秋もびっくりドンキーから秋空に浮かぶまんまるお月様のようなたまごがのった2種のバーグディッシュと、1種のサイドメニューが期間限定で登場します。日本の秋を味覚と視覚で愉しめる、びっくりドンキーでしか味わえない月見メニューをとろ～り卵をたっぷりからめて是非ご堪能ください。",
+    img: "<%= image_path('meal/meal_donki.png') %>",
+    maker: "びっくりドンキー",
+    period: "8月27日〜10月中旬",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://www.bikkuri-donkey.com/lp/2025_tsukimihamburg/"
+  },
+  {
+    name: "月見すきやき牛丼",
+    desc: "今日本の秋の風物詩“お月見”を盛り上げる「月見すきやき牛丼」が、昨年に続き今年も期間限定で登場します。特製のすき焼きダレがしみ込んだ白菜や春菊、人参、しらたき、大ぶりの焼き豆腐を、すき家自慢の牛丼にのせました。月に見立てたたまごとご一緒にお召し上がりください。",
+    img: "<%= image_path('meal/meal_sukiya.png') %>",
+    maker: "すき家",
+    period: "9月4日〜",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://news.sukiya.jp/special/sukiyaki202509/index.html"
+  },
+  {
+    name: "月見うま肉そば",
+    desc: "鳥羽シェフが監修した「月見うま肉そば」は、甘じょっぱいつゆで煮込んだお肉をたっぷりと乗せ、富士そばの人気メニュー“紅生姜天”をトッピングした、食べ応えある一杯です。",
+    img: "<%= image_path('meal/meal_fuji.png') %>",
+    maker: "明代 富士そば",
+    period: "9月1日〜9月30日",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://fujisoba.co.jp/news/entry/entry002033.html"
+  },
+  {
+    name: "お月見肉あんかけ炸醬麵（ジャージャーメン）",
+    desc: "冷水で締めた麺に熱々の肉あんをたっぷりかけた、「冷」×「温」の絶妙なバランスがたまらない季節限定の贅沢炸醤麺。月見を意識した目玉焼きトッピングと香り高い紅油辣油がアクセント。見た目も華やかで食欲をそそる逸品です。",
+    img: "<%= image_path('meal/meal_osaka.png') %>",
+    maker: "大阪王将",
+    period: "9月1日〜9月30日",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://www.osaka-ohsho.com/limited/%E3%81%8A%E6%9C%88%E8%A6%8B%E8%82%89%E3%81%82%E3%82%93%E3%81%8B%E3%81%91%E7%82%B8%E9%86%AC%E9%BA%B5%EF%BC%88%E3%82%B8%E3%83%A3%E3%83%BC%E3%82%B8%E3%83%A3%E3%83%BC%E3%83%A1%E3%83%B3%EF%BC%89/"
+  },
+  {
+    name: "トリュフ香る牛すき月見ラーメン",
+    desc: "長い夏が続く中でも、秋を感じたくなる9 月 。 秋の味覚であるトリュフと真ん中に浮かぶ満月を見て 、四季の移ろいを感じながら、変わらない優しい味わいのスープで心穏やかなひとときをお過ごしください。",
+    img: "<%= image_path('meal/meal_kamukura.png') %>",
+    maker: "神座",
+    period: "9月3日〜9月30日",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://kamukura.co.jp/info/press/9606/"
+  },
+  {
+    name: "もちっと和風クォーター",
+    desc: "ピザーラから、お月見シーズンにぴったりのお餅をトッピングした“もっちもち”なお月見ピザ『もちっと和風クォーター』が新登場。日本生まれのピザーラならではの和風テイスト4種類を一度に楽しめます。",
+    img: "<%= image_path('meal/meal_pizzala.png') %>",
+    maker: "PIZZA-LA",
+    period: "8月21日〜11月4日",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://www.pizza-la.co.jp/Item.aspx?id=0010096"
+  },
+  {
+    name: "月見鍋",
+    desc: "赤から鍋にたっぷりのメレンゲと卵黄を自分でのせて完成させる“ふわっとろっ”食感が体験できる新感覚の鍋です。お月見シーズン限定の赤からでしか味わえない「作って楽しい！食べて美味しい！」エンターテインメント性のある「赤から月見鍋」は気の合った仲間とともに楽しむのに最適!ご賞味あれ",
+    img: "<%= image_path('meal/meal_akakara.png') %>",
+    maker: "赤から",
+    period: "8月25日〜10月26日",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://akakara.jp/pages/tsukimi_2025"
+  },
+  {
+    name: "月見Wカルビ",
+    desc: "赤から鍋にたっぷりのメレンゲと卵黄を自分でのせて完成させる“ふわっとろっ”食感が体験できる新感覚の鍋です。お月見シーズン限定の赤からでしか味わえない「作って楽しい！食べて美味しい！」エンターテインメント性のある「赤から月見鍋」は気の合った仲間とともに楽しむのに最適!ご賞味あれ",
+    img: "<%= image_path('meal/meal_like.png') %>",
+    maker: "焼肉ライク",
+    period: "9月16日〜数量限定",
+    tweetText: "#お月見限定商品を楽しもう #秋のミニアプリweek",
+    officialLink: "https://prtimes.jp/main/html/rd/p/000000447.000034691.html"
+  },
 ];
