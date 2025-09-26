@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get "home/index"                           # /home/index でも同じ画面を見たいなら残す（不要なら削除）
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   namespace :api do
-    get 'images/paths', to: 'images#paths'
+    get "images/paths", to: "images#paths"
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
