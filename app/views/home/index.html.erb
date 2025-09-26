@@ -1,79 +1,35 @@
-<div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>月見バーガー特設サイト</title>
+    <!-- CSSスタイル -->
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+  </head>
 
-<!-- 商品表示エリア（独立して配置） -->
-<div id="product-card" class="product-card" hidden></div>
+  <body>
+    <div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+    <!-- 商品表示エリア（独立して配置） -->
+    <div id="product-card" class="product-card" hidden></div>
+    <div class="ui-layer">
+      <div class="btn-row">
+        <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
+          <%= image_tag "btn_dessert.png", alt: "デザート" %>
+        </button>
+        <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
+          <%= image_tag "btn_gohan.png", alt: "ごはん" %>
+        </button>
+        <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
+          <%= image_tag "btn_goods.png", alt: "グッズ" %>
+        </button>
+      </div>
+    </div>
 
-<div class="ui-layer">
-  <div class="btn-row">
-    <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
-      <%= image_tag "btn_dessert.png", alt: "デザート" %>
-    </button>
-    <button class="img-btn" aria-label="ごはん" onclick="onCategoryClick('meal')">
-      <%= image_tag "btn_gohan.png", alt: "ごはん" %>
-    </button>
-    <button class="img-btn" aria-label="グッズ" onclick="onCategoryClick('goods')">
-      <%= image_tag "btn_goods.png", alt: "グッズ" %>
-    </button>
-  </div>
-</div>
-
-<!-- 既存のJavaScript -->
-<script>
-  // 画像パスをRails側で解決（存在するものだけ列挙）
-  const IMG = {
-    "moon_burger.png":  "<%= image_path('moon_burger.png') %>",
-    "moon_parfait.png": "<%= image_path('moon_parfait.png') %>",
-    "moon_goods.png":   "<%= image_path('moon_goods.png') %>"
-  };
-
-  // とりあえずの"商品DB"（あとで増やせます）
-  const DB = {
-    dessert: [
-      { name: "月見パフェ",  desc: "夜空色ゼリーと白玉のパフェ。", img: "moon_parfait.png" }
-    ],
-    meal: [
-      { name: "月見バーガー", desc: "半熟風たまごが主役のバーガー。", img: "moon_burger.png" }
-    ],
-    goods: [
-      { name: "お月見マグ",  desc: "ウサギ刻印の陶器マグ。", img: "moon_goods.png" }
-    ]
-  };
-
-  function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  // ボタンクリック時：商品カードを生成して表示
-  window.onCategoryClick = function(type){
-    const list = DB[type] || [];
-    if (!list.length) {
-      showToast("準備中です");
-      return;
-    }
-    const item = pickRandom(list);
-    const card = document.getElementById('product-card');
-    const imgTag = item.img && IMG[item.img] ? `<img src="${IMG[item.img]}" alt="">` : "";
-
-    card.innerHTML = `
-      <h2>${item.name}</h2>
-      <p class="desc">${item.desc}</p>
-      ${imgTag}
-    `;
-    card.hidden = false;
-    card.classList.remove('show'); // 再クリック時の軽いアニメ用
-    requestAnimationFrame(()=>card.classList.add('show'));
-
-    // 既存のトーストも出す（任意）
-    showToast(`${labelOf(type)} を選びました`);
-  };
-
-  function labelOf(type){ return ({dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type); }
-
-  // 既存トースト（少し共通化）
-  function showToast(text){
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = text;
-    document.body.appendChild(toast);
-    requestAnimationFrame(()=>toast.classList.add('show'));
-    setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(), 250); }, 1200);
-  }
-</script>
+    <!-- 外部ファイルを読み込む -->
+    <%= javascript_include_tag 'data/dessert_data' %>
+    <%= javascript_include_tag 'data/meal_data' %>
+    <%= javascript_include_tag 'data/goods_data' %>
+    <%= javascript_include_tag 'main' %>
+  </body>
+</html>
