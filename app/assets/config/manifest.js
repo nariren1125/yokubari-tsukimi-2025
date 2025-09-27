@@ -6,4 +6,4 @@
 //= link data/meal_data.js
 //= link data/goods_data.js
 //= link main.js
-//= link_directory ../stylesheets .css
+//= link application.scss
