@@ -22,7 +22,8 @@
   
   width: var(--card-width);
   min-height: clamp(180px, 22vmin, 300px);
-  max-height: calc(100vh - var(--card-top) - 140px);
+  /* 高さを生後 */
+  max-height: 75vh;
   overflow-y: auto;
   
   background: rgba(255, 255, 255, 0.95);
@@ -229,7 +230,7 @@
 
 /* ===== レスポンシブ対応の強化 ===== */
 /* スマホ向けの調整 */
-@media (max-height: 600px) {
+@media (max-height: 768px) {
     :root {
         --card-top: 60px;
         --button-zone: 80px;
@@ -238,7 +239,7 @@
     
     .product-card {
         padding: 16px 20px;
-        max-height: calc(100vh - 180px);
+        max-height: 65vh;
     }
 }
 
@@ -253,7 +254,8 @@
 @media (max-height: 500px) and (orientation: landscape) {
     :root {
         --card-top: 40px;
-        --button-zone: 60px;
+        --button-zone
+        : 60px;
         --buttons-bottom: 12px;
     }
     
