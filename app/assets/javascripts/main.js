@@ -48,7 +48,7 @@
     const card = document.getElementById('product-card');
     
     // 中身を組み立てる処理を関数化
-    function buildCardContent(item){
+    function buildCardContent(item) {
       const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
     
       const officialContent = item.officialLink 
@@ -68,23 +68,19 @@
     
           <!-- 中央 -->
           <div class="center-section">
-            <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
+            <button class="tweet-btn" data-item='${JSON.stringify(item)}'>
               <span class="x-icon">𝕏</span> 投稿
             </button>
           </div>
     
           <!-- 右下 -->
           <div class="share-section">
-            <div class="image-note-wrapper">
-              <p class="image-note">画像はイメージです。<br class="mobile-hide-br">詳しくは↓をクリック
-              </p>
-            </div>
+            <p class="image-note">画像はイメージです。<br class="mobile-hide-br">詳しくは↓をクリック</p>
             ${officialContent}
           </div>
         </div>
       `;
     }
-    
 
     // 既に表示されている場合 → フェードアウトしてから差し替え
     if (card.classList.contains("show")) {
@@ -112,10 +108,21 @@
     // showToast(`${labelOf(type)} を選びました`);
   };
 
+  // 投稿ボタンのクリックを監視
+  document.addEventListener("click", function(e) {
+    const btn = e.target.closest(".tweet-btn");
+      if (btn) {
+        const item = JSON.parse(btn.dataset.item);
+      shareToX(item);
+      }
+  });
+
   // X投稿機能
-  function shareToX(tweetText) {
-    const url = `https://twitter.com/intent/tweet?text=${tweetText}`;
-    window.open(url, '_blank', 'width=550,height=420');
+  function shareToX(item) {
+    const appUrl = "https://yokubari-tsukimi-2025.onrender.com/"; // 常にトップページ
+    const text = `${item.tweetText || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank", "width=550,height=420");
   }
 
   function labelOf(type){ return ({dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type); }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "秋のよくばりお月見メーカー" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
@@ -14,8 +14,15 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <!-- ✅ OGP設定ここから -->
+    <meta property="og:title" content="月見バーガー特設サイト" />
+    <meta property="og:description" content="秋のお月見限定商品をチェック！" />
+    <meta property="og:image" content="<%= asset_url('ogp_image.png') %>" />
+    <meta property="og:url" content="https://yokubari-tsukimi-2025.onrender.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- ✅ OGP設定ここまで -->
   </head>
 
   <body>
