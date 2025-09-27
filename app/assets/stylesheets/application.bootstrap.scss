@@ -19,11 +19,14 @@
   left: 50% !important;
   top: var(--card-top) !important; /* top を変数で制御 */
   bottom: auto !important;
-  
-  width: var(--card-width);
+
+  width: min(90vw, 600px); /* ← 直接指定してOK */
+  max-width: 100%;         /* ← はみ出さない保険 */
+  box-sizing: border-box;  /* ← padding/border込みで計算 */
+
   min-height: clamp(180px, 22vmin, 300px);
   /* 高さを生後 */
-  max-height: 75vh;
+  max-height: calc(100vh - var(--card-top) - var(--button-zone) - var(--buttons-bottom) - 160px);
   overflow-y: auto;
   
   background: rgba(255, 255, 255, 0.95);
@@ -42,8 +45,8 @@
   
   /* アニメーション（非表示状態） */
   opacity: 0;
-  transform: translate(-50%, -20px);
-  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translate(-50%, -20px) scale(0.95);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 
@@ -71,9 +74,16 @@
     left: 50% !important;
     top: var(--card-top) !important;
     opacity: 1 !important;
-    transform: translate(-50%, 0) !important;
+    transform: translate(-50%, 0) scale(1) !important;
     pointer-events: auto !important;
     z-index: 9999 !important; /* 大幅に上げる */
+}
+
+/* 非表示状態（即座に消える） */
+.product-card.hide {
+    opacity: 0 !important;
+    transform: translate(-50%, -20px) scale(0.95) !important;
+    pointer-events: none !important;
 }
 
 /* 商品画像のスタイル */
@@ -230,19 +240,44 @@
 
 /* ===== レスポンシブ対応の強化 ===== */
 /* スマホ向けの調整 */
-@media (max-height: 768px) {
-    :root {
-        --card-top: 60px;
-        --button-zone: 80px;
-        --buttons-bottom: 16px;
+@media (max-width: 480px) {
+    .item-info-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    
-    .product-card {
-        padding: 16px 20px;
-        max-height: 65vh;
+  
+    .item-details   { order: 1; } /* 商品詳細 */
+    .image-note     { order: 2; } /* 注意書き */
+    .share-section  { order: 3; } /* 公式サイト */
+    .center-section { order: 4; } /* X投稿 */
+  
+    .share-section,
+    .center-section {
+      width: 100%;
+      text-align: center;
     }
-}
-
+  
+    .official-link-btn,
+    .tweet-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      padding: 12px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+  
+    .image-note {
+      font-size: 12px;
+      text-align: center;
+      margin: 8px 0;
+      white-space: nowrap;       /* 折り返し禁止 → 必ず1行 */
+      overflow: hidden;          /* はみ出したら…で省略 */
+      text-overflow: ellipsis;   /* はみ出しを「…」に */
+    }
+  }
+  
 /* タブレット向けの調整 */
 @media (min-height: 800px) {
     :root {
