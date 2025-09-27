@@ -60,27 +60,32 @@
         <p class="desc">${item.desc}</p>
         ${imgTag}
         <div class="item-info-row">
+          <!-- 左下 -->
           <div class="item-details">
             <p class="maker">メーカー: ${item.maker || 'メーカー情報なし'}</p>
             <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
           </div>
     
-          <!-- 注意書きを share-section の外に配置 -->
-          <p class="image-note">画像はイメージです。詳しくは↓をクリック</p>
-    
-          <div class="share-section">
-            ${officialContent}
-          </div>
-    
+          <!-- 中央 -->
           <div class="center-section">
             <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
               <span class="x-icon">𝕏</span> 投稿
             </button>
           </div>
+    
+          <!-- 右下 -->
+          <div class="share-section">
+            <div class="image-note-wrapper">
+              <p class="image-note">画像はイメージです。<br class="mobile-hide-br">詳しくは↓をクリック
+              </p>
+            </div>
+            ${officialContent}
+          </div>
         </div>
       `;
     }
-  
+    
+
     // 既に表示されている場合 → フェードアウトしてから差し替え
     if (card.classList.contains("show")) {
       card.classList.remove("show");
