@@ -34,8 +34,8 @@
 
   // ★ 新しいレイアウトに対応したカード生成
   window.onCategoryClick = function(type){
-    console.log('onCategoryClick called with:', type); // デバッグ追加
-    
+    console.log('onCategoryClick called with:', type); 
+      
     const list = DB[type] || [];
     if (!list.length) {
       showToast("準備中です");
@@ -43,49 +43,68 @@
     }
     
     const item = pickRandom(list);
-    console.log('Selected item:', item); // デバッグ追加
-    
-    const card = document.getElementById('product-card');
-    const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
-
-    // 公式リンクボタンまたは注意書きを生成
-    const officialContent = item.officialLink 
-      ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
-      : `<p class="no-link-note">公式リンクは準備中です</p>`;
-
-    card.innerHTML = `
-      <h2>${item.name}</h2>
-      <p class="desc">${item.desc}</p>
-      ${imgTag}
+    console.log('Selected item:', item); 
       
-      <!-- ★ 3列レイアウト：左（商品情報）｜中央（Xボタン）｜右（画像注意+公式リンク） -->
-      <div class="item-info-row">
-        <!-- 左側：商品詳細情報 -->
-        <div class="item-details">
-          <p class="maker">メーカー: ${item.maker || 'メーカー情報なし'}</p>
-          <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
-        </div>
-        
-        <!-- 中央：Xボタン -->
-        <div class="center-section">
-          <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
-            <span class="x-icon">𝕏</span> 投稿
-          </button>
-        </div>
-        
-        <!-- 右側：画像注意書き＋公式リンク -->
-        <div class="share-section">
-          <p class="image-note">画像はイメージです。<br>詳しくは↓をクリック</p>
-          ${officialContent}
-        </div>
-      </div>
-    `;
+    const card = document.getElementById('product-card');
     
-    card.hidden = false;
-    card.classList.remove('show');
-    requestAnimationFrame(()=>card.classList.add('show'));
-
-    showToast(`${labelOf(type)} を選びました`);
+    // 中身を組み立てる処理を関数化
+    function buildCardContent(item){
+      const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
+    
+      const officialContent = item.officialLink 
+        ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
+        : `<p class="no-link-note">公式リンクは準備中です</p>`;
+    
+      return `
+        <h2>${item.name}</h2>
+        <p class="desc">${item.desc}</p>
+        ${imgTag}
+        <div class="item-info-row">
+          <div class="item-details">
+            <p class="maker">メーカー: ${item.maker || 'メーカー情報なし'}</p>
+            <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
+          </div>
+    
+          <!-- 注意書きを share-section の外に配置 -->
+          <p class="image-note">画像はイメージです。詳しくは↓をクリック</p>
+    
+          <div class="share-section">
+            ${officialContent}
+          </div>
+    
+          <div class="center-section">
+            <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
+              <span class="x-icon">𝕏</span> 投稿
+            </button>
+          </div>
+        </div>
+      `;
+    }
+  
+    // 既に表示されている場合 → フェードアウトしてから差し替え
+    if (card.classList.contains("show")) {
+      card.classList.remove("show");
+      card.classList.add("hide");
+  
+      card.addEventListener("transitionend", function handler(){
+        card.removeEventListener("transitionend", handler);
+  
+        // 中身差し替え
+        card.innerHTML = buildCardContent(item);
+  
+        // フェードイン
+        card.classList.remove("hide");
+        requestAnimationFrame(()=>card.classList.add("show"));
+      });
+  
+    } else {
+      // 初回表示
+      card.innerHTML = buildCardContent(item);
+      card.hidden = false;
+      requestAnimationFrame(()=>card.classList.add("show"));
+    }
+  
+    // showToast(`${labelOf(type)} を選びました`);
   };
 
   // X投稿機能
