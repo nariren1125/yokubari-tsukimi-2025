@@ -102,6 +102,14 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # === 初期データ投入（本番のみ） ===
+  config.after_initialize do
+    if Item.count.zero?
+      Rails.logger.info "🌱 Seeding initial data in production..."
+      load Rails.root.join("db/seeds.rb")
+    end
+  end
 end
 
 Rails.application.routes.default_url_options[:host] = "yokubari-tsukimi-2025.onrender.com"
