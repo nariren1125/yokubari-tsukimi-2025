@@ -44,7 +44,7 @@ window.onCategoryClick = function(type) {
     const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
 
     const officialContent = item.officialLink
-      ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
+      ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn" data-item-name="${item.name}">公式サイトへ</a>`
       : `<p class="no-link-note">公式リンクは準備中です</p>`;
 
     return `
@@ -80,7 +80,33 @@ window.onCategoryClick = function(type) {
   // ✅ 再描画後にイベントリスナーを付ける
   const tweetBtn = card.querySelector(".tweet-btn");
   if (tweetBtn) {
-    tweetBtn.addEventListener("click", () => shareToX(item));
+    tweetBtn.addEventListener("click", () => {
+      shareToX(item); // ① X投稿処理
+
+      if (typeof gtag === "function") { // ② GA4イベント送信
+        gtag("event", "click_tweet", {
+          event_category: "engagement",
+          event_label: item.name,
+          value: 1
+        });
+        console.log("GA4イベント送信: X投稿 -", item.name);
+      }
+    });
+  }
+
+  // ✅ 公式サイトリンク
+  const officialLink = card.querySelector(".official-link-btn");
+  if (officialLink) {
+    officialLink.addEventListener("click", () => {
+      if (typeof gtag === "function") {
+        gtag("event", "click_official", {
+          event_category: "engagement",
+          event_label: item.name,
+          value: 1
+        });
+        console.log("GA4イベント送信: 公式サイト -", item.name);
+      }
+    });
   }
 };
 
