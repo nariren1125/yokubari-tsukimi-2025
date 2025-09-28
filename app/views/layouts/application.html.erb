@@ -29,5 +29,10 @@
 
   <body>
     <%= yield %>
+    <!-- 商品画像拡大用モーダル -->
+    <div id="image-modal" class="image-modal" hidden>
+      <button class="close-modal">×</button>
+      <img id="modal-image" src="" alt="拡大画像">
+    </div>
   </body>
 </html>

@@ -114,6 +114,22 @@ function closeCard() {
     card.removeEventListener("transitionend", handler);
   });
 }
+// ===== モーダル拡大表示 =====
+document.addEventListener("click", function(e) {
+  // 商品カード内の画像がクリックされたら
+  const img = e.target.closest(".product-card img");
+  if (img) {
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("modal-image");
+    modalImg.src = img.src;
+    modal.hidden = false;
+  }
+
+  // ×ボタンで閉じる
+  if (e.target.classList.contains("close-modal")) {
+    document.getElementById("image-modal").hidden = true;
+  }
+});
 
 // ✅ X投稿機能（外に切り出し）
 function shareToX(tweetText) {

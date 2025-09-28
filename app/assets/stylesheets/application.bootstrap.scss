@@ -268,6 +268,48 @@
 }
 
 /* ===== レスポンシブ対応の強化 ===== */
+/* ===== 画像モーダル ===== */
+.image-modal {
+  position: fixed;
+  top: var(--card-top);
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--card-base-width);
+  max-width: var(--card-max-width);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3);
+  z-index: 10000; /* product-cardより上 */
+  text-align: center;
+}
+
+.image-modal img {
+  max-width: 100%;
+  max-height: 50vh;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.image-modal .close-modal {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+}
+.image-modal .close-modal:hover {
+  color: #000;
+}
+
+/* 非表示状態 */
+.image-modal[hidden] {
+  display: none;
+}
 /* ===== スマホ向けの調整 ===== */
 /* スマホ向け */
 @media (max-width: 480px) {
