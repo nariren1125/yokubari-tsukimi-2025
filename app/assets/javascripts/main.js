@@ -58,10 +58,7 @@ window.onCategoryClick = function(type) {
           <p class="period">販売期間: ${item.period || "期間情報なし"}</p>
         </div>
         <div class="center-section">
-          <!-- onclick は書かず class のみ -->
-          <button class="tweet-btn">
-            <span class="x-icon">𝕏</span> 投稿
-          </button>
+          <button class="tweet-btn"><span class="x-icon">𝕏</span> 投稿</button>
         </div>
         <div class="share-section">
           <div class="image-note-wrapper">
@@ -73,28 +70,47 @@ window.onCategoryClick = function(type) {
     `;
   }
 
-  card.innerHTML = buildCardContent(item);
-  card.hidden = false;
-  requestAnimationFrame(()=>card.classList.add("show"));
+  // ✅ ここを追加：ふわっと切り替え
+  if (!card.hidden) {
+    card.classList.remove("show");
+    card.classList.add("hide");
 
-  // ✅ 再描画後にイベントリスナーを付ける
+    card.addEventListener("transitionend", function handler() {
+      card.removeEventListener("transitionend", handler);
+
+      // 中身を更新して再表示
+      card.innerHTML = buildCardContent(item);
+      card.classList.remove("hide");
+      requestAnimationFrame(() => card.classList.add("show"));
+
+      attachEventListeners(card, item);
+    });
+  } else {
+    // 初回表示
+    card.innerHTML = buildCardContent(item);
+    card.hidden = false;
+    requestAnimationFrame(() => card.classList.add("show"));
+
+    attachEventListeners(card, item);
+  }
+};
+
+// ✅ イベントリスナーを付与する処理を共通化
+function attachEventListeners(card, item) {
   const tweetBtn = card.querySelector(".tweet-btn");
   if (tweetBtn) {
     tweetBtn.addEventListener("click", () => {
-      shareToX(item); // ① X投稿処理
-
-      if (typeof gtag === "function") { // ② GA4イベント送信
+      shareToX(item);
+      if (typeof gtag === "function") {
         gtag("event", "click_tweet", {
           event_category: "engagement",
           event_label: item.name,
           value: 1
         });
-        console.log("GA4イベント送信: X投稿 -", item.name);
       }
     });
   }
 
-  // ✅ 公式サイトリンク
   const officialLink = card.querySelector(".official-link-btn");
   if (officialLink) {
     officialLink.addEventListener("click", () => {
@@ -104,11 +120,10 @@ window.onCategoryClick = function(type) {
           event_label: item.name,
           value: 1
         });
-        console.log("GA4イベント送信: 公式サイト -", item.name);
       }
     });
   }
-};
+}
 
 // ✅ 閉じる処理
 window.closeCard = function() {
