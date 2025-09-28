@@ -133,8 +133,8 @@ document.addEventListener("click", function(e) {
 
 // ✅ X投稿機能
 window.shareToX = function(item) {
-  const appUrl = `${window.location.origin}/items/${item.id}`;
+  const appUrl = `${window.location.origin}`;  // ← トップページに修正！
   const text = `${item.tweet_text || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`;
   window.open(url, "_blank", "width=550,height=420");
 };
