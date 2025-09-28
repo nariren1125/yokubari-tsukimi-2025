@@ -1,28 +1,33 @@
+// ===== Railsからデータを取得してDBに格納 =====
+let DB = { meal: [], dessert: [], goods: [] };
 
-  // デバッグ用コード（修正版）
-  console.log('=== ファイル読み込み確認 ===');
-  console.log('DESSERT_DATA:', typeof DESSERT_DATA !== 'undefined' ? DESSERT_DATA : 'undefined');
+async function fetchItems() {
+  try {
+    const res = await fetch("/items.json");
+    const items = await res.json();
 
-  // 商品データベース
-  const DB = {
-    dessert: typeof DESSERT_DATA !== 'undefined' ? DESSERT_DATA.map(item => {
-      console.log('処理中:', item.name, 'リンク:', item.officialLink);
-      return {
-        ...item,
-        officialLink: item.officialLink || nulls
-      };
-    }) : [],
-    
-    meal: typeof MEAL_DATA !== 'undefined' ? MEAL_DATA.map(item => ({
-      ...item,
-      officialLink: item.officialLink || null
-    })) : [],
-    
-    goods: typeof GOODS_DATA !== 'undefined' ? GOODS_DATA.map(item => ({
-      ...item,
-      officialLink: item.officialLink || null
-    })) : []
-  };
+    // カテゴリごとに仕分け
+    DB = {
+      meal: items.filter(i => i.category === "meal"),
+      dessert: items.filter(i => i.category === "dessert"),
+      goods: items.filter(i => i.category === "goods")
+    };
+
+    console.log("DBロード完了:", DB);
+  } catch (err) {
+    console.error("アイテム取得失敗:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", fetchItems);
+
+// ===== デバッグ用コード（修正版） =====
+console.log("=== DB構造確認 ===");
+console.log("DB keys:", Object.keys(DB));
+
+// ページ読み込み時に実行
+document.addEventListener("DOMContentLoaded", fetchItems);
+
 
   // デバッグ用コード（修正版）
   console.log('=== DB構造確認 ===');
@@ -68,7 +73,7 @@ window.onCategoryClick = function(type){
           <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
         </div>
         <div class="center-section">
-          <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
+          <button class="tweet-btn" onclick='shareToX(${JSON.stringify(item)})'>
             <span class="x-icon">𝕏</span> 投稿
           </button>
         </div>
@@ -132,7 +137,9 @@ document.addEventListener("click", function(e) {
 });
 
 // ✅ X投稿機能（外に切り出し）
-function shareToX(tweetText) {
-  const url = `https://twitter.com/intent/tweet?text=${tweetText}`;
-  window.open(url, '_blank', 'width=550,height=420');
+function shareToX(item) {
+  const appUrl = `${window.location.origin}/items/${item.id}`;
+  const text = `${item.tweet_text || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank", "width=550,height=420");
 }

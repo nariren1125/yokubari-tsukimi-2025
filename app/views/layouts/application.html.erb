@@ -19,11 +19,18 @@
     <%= javascript_importmap_tags %>
 
     <!-- ✅ OGP設定ここから -->
-    <meta property="og:title" content="月見バーガー特設サイト" />
-    <meta property="og:description" content="秋のお月見限定商品をチェック！" />
-    <meta property="og:image" content="<%= asset_url('ogp_image.png') %>" />
-    <meta property="og:url" content="https://yokubari-tsukimi-2025.onrender.com/" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <% if defined?(@item) && @item.present? %>
+  <meta property="og:title" content="<%= @item.name %>" />
+  <meta property="og:description" content="<%= @item.desc.truncate(100) %>" />
+  <meta property="og:image" content="<%= asset_url(@item.img) %>" />
+  <meta property="og:url" content="<%= item_url(@item) %>" />
+<% else %>
+  <!-- デフォルト OGP -->
+  <meta property="og:title" content="秋のよくばりお月見メーカー" />
+  <meta property="og:description" content="秋のお月見限定商品をチェック！" />
+  <meta property="og:image" content="<%= asset_url('ogp_image.png') %>" />
+  <meta property="og:url" content="https://yokubari-tsukimi-2025.onrender.com/" />
+<% end %>
     <!-- ✅ OGP設定ここまで -->
   </head>
 

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :items, only: [:show, :index]
   root "home#index"                          # / で Home#index を表示
   get "home/index"                           # /home/index でも同じ画面を見たいなら残す（不要なら削除）
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
