@@ -21,7 +21,7 @@ RSpec.describe "Items", type: :request do
         tweet_text: "#test",
         category: "meal"
       )
-  
+
       get "/items/#{item.id}.json"
       expect(response).to have_http_status(:success)
     end
