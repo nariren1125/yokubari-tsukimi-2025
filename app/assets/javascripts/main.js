@@ -1,9 +1,4 @@
-
-  // デバッグ用コード（修正版）
-  console.log('=== ファイル読み込み確認 ===');
-  console.log('DESSERT_DATA:', typeof DESSERT_DATA !== 'undefined' ? DESSERT_DATA : 'undefined');
-
-  // ===== 商品データベース =====
+// ===== 商品データベース（静的ファイルから読み込み） =====
 const DB = {
   dessert: typeof DESSERT_DATA !== "undefined" ? DESSERT_DATA.map(item => ({
     ...item,
@@ -29,30 +24,29 @@ function pickRandom(arr) {
 }
 
 // ✅ onCategoryClick の定義
-window.onCategoryClick = function(type){
-  console.log('onCategoryClick called with:', type); 
+window.onCategoryClick = function(type) {
+  console.log("onCategoryClick called with:", type);
 
   const list = DB[type] || [];
   if (!list.length) {
-    showToast("準備中です");
+    alert("準備中です");
     return;
   }
-  
-  const item = pickRandom(list);
-  console.log('Selected item:', item); 
-  
-  const card = document.getElementById('product-card');
-  const defaultTitle = document.getElementById("default-title"); 
 
+  const item = pickRandom(list);
+  console.log("Selected item:", item);
+
+  const card = document.getElementById("product-card");
+  const defaultTitle = document.getElementById("default-title");
   if (defaultTitle) defaultTitle.style.display = "none";
 
-  function buildCardContent(item){
+  function buildCardContent(item) {
     const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
-  
-    const officialContent = item.officialLink 
+
+    const officialContent = item.officialLink
       ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
       : `<p class="no-link-note">公式リンクは準備中です</p>`;
-  
+
     return `
       <button class="close-btn" onclick="closeCard()">×</button>
       <h2>${item.name}</h2>
@@ -60,11 +54,11 @@ window.onCategoryClick = function(type){
       ${imgTag}
       <div class="item-info-row">
         <div class="item-details">
-          <p class="maker">メーカー: ${item.maker || 'メーカー情報なし'}</p>
-          <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
+          <p class="maker">メーカー: ${item.maker || "メーカー情報なし"}</p>
+          <p class="period">販売期間: ${item.period || "期間情報なし"}</p>
         </div>
         <div class="center-section">
-          <!-- ここではonclickを使わず class だけ -->
+          <!-- onclick は書かず class のみ -->
           <button class="tweet-btn">
             <span class="x-icon">𝕏</span> 投稿
           </button>
@@ -83,7 +77,7 @@ window.onCategoryClick = function(type){
   card.hidden = false;
   requestAnimationFrame(()=>card.classList.add("show"));
 
-  // ✅ 生成したあとでイベントリスナーをアタッチ
+  // ✅ 再描画後にイベントリスナーを付ける
   const tweetBtn = card.querySelector(".tweet-btn");
   if (tweetBtn) {
     tweetBtn.addEventListener("click", () => shareToX(item));
@@ -91,7 +85,7 @@ window.onCategoryClick = function(type){
 };
 
 // ✅ 閉じる処理
-function closeCard() {
+window.closeCard = function() {
   const card = document.getElementById("product-card");
   const defaultTitle = document.getElementById("default-title");
 
@@ -103,7 +97,7 @@ function closeCard() {
     if (defaultTitle) defaultTitle.style.display = "block";
     card.removeEventListener("transitionend", handler);
   });
-}
+};
 
 // ===== モーダル拡大表示 =====
 document.addEventListener("click", function(e) {
@@ -129,6 +123,6 @@ window.shareToX = function(item) {
 
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`;
 
-  console.log("tweet URL:", url); // デバッグ
+  console.log("tweet URL:", url);
   window.open(url, "_blank", "width=550,height=420");
 };
