@@ -1,7 +1,7 @@
 class SeedInitialItems < ActiveRecord::Migration[7.0]
   def up
     return if Rails.env.test?  # ← テスト環境では実行しない
-    
+
     Item.create!(
       [
         {
