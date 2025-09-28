@@ -58,7 +58,8 @@ window.onCategoryClick = function(type) {
           <p class="period">販売期間: ${item.period || "期間情報なし"}</p>
         </div>
         <div class="center-section">
-          <button class="tweet-btn" onclick='shareToX(${JSON.stringify(item)})'>
+          <!-- onclick は書かず class のみ -->
+          <button class="tweet-btn">
             <span class="x-icon">𝕏</span> 投稿
           </button>
         </div>
@@ -74,7 +75,13 @@ window.onCategoryClick = function(type) {
 
   card.innerHTML = buildCardContent(item);
   card.hidden = false;
-  requestAnimationFrame(() => card.classList.add("show"));
+  requestAnimationFrame(()=>card.classList.add("show"));
+
+  // ✅ 再描画後にイベントリスナーを付ける
+  const tweetBtn = card.querySelector(".tweet-btn");
+  if (tweetBtn) {
+    tweetBtn.addEventListener("click", () => shareToX(item));
+  }
 };
 
 // ✅ 閉じる処理
@@ -109,9 +116,13 @@ document.addEventListener("click", function(e) {
 
 // ✅ X投稿機能
 window.shareToX = function(item) {
-  const appUrl = `${window.location.origin}`;
-  const text = `${item.tweetText || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
+  console.log("shareToX called with:", item);
+
+  const appUrl = window.location.origin;
+  const text = `${item.tweetText || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！`;
+
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`;
+
+  console.log("tweet URL:", url);
   window.open(url, "_blank", "width=550,height=420");
 };
-
