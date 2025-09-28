@@ -32,11 +32,10 @@
 
   function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-  // ★ 新しいレイアウトに対応したカード生成
-// ✅ onCategoryClick の定義はここまででOK
+// ✅ onCategoryClick の定義
 window.onCategoryClick = function(type){
   console.log('onCategoryClick called with:', type); 
-  
+
   const list = DB[type] || [];
   if (!list.length) {
     showToast("準備中です");
@@ -116,20 +115,8 @@ function closeCard() {
   });
 }
 
-// X投稿機能
+// ✅ X投稿機能（外に切り出し）
 function shareToX(tweetText) {
   const url = `https://twitter.com/intent/tweet?text=${tweetText}`;
   window.open(url, '_blank', 'width=550,height=420');
-}
-
-function labelOf(type){ return ({dessert:'デザート', meal:'ごはん', goods:'グッズ'}[type] || type); }
-
-// トースト
-function showToast(text){
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = text;
-  document.body.appendChild(toast);
-  requestAnimationFrame(()=>toast.classList.add('show'));
-  setTimeout(()=>{ toast.classList.remove('show'); setTimeout(()=>toast.remove(), 250); }, 1200);
 }
