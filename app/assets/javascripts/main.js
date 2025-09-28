@@ -9,7 +9,7 @@
       console.log('処理中:', item.name, 'リンク:', item.officialLink);
       return {
         ...item,
-        officialLink: item.officialLink || nulls
+        officialLink: item.officialLink || null   // ✅ nulls → null
       };
     }) : [],
     
@@ -68,7 +68,7 @@ window.onCategoryClick = function(type){
           <p class="period">販売期間: ${item.period || '期間情報なし'}</p>
         </div>
         <div class="center-section">
-          <button class="tweet-btn" onclick="shareToX('${encodeURIComponent(item.tweetText || item.name + 'を発見！')}')">
+          <button class="tweet-btn" data-item='{"name":"${item.name}","tweetText":"${item.tweetText}"}'>
             <span class="x-icon">𝕏</span> 投稿
           </button>
         </div>
@@ -132,7 +132,9 @@ document.addEventListener("click", function(e) {
 });
 
 // ✅ X投稿機能（外に切り出し）
-function shareToX(tweetText) {
-  const url = `https://twitter.com/intent/tweet?text=${tweetText}`;
-  window.open(url, '_blank', 'width=550,height=420');
-}
+window.shareToX = function(item) {
+  const appUrl = `${window.location.origin}`;
+  const text = `${item.tweetText || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`;
+  window.open(url, "_blank", "width=550,height=420");
+};
