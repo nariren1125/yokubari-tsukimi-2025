@@ -3,15 +3,28 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>月見バーガー特設サイト</title>
+    <title>秋のよくばり月見メーカー</title>
     <!-- CSSスタイル -->
     <%= stylesheet_link_tag 'application', media: 'all' %>
   </head>
 
   <body>
     <div class="bg-only" style="background-image:url('<%= asset_path("tsukimi_bg.jpg") %>')"></div>
+
+    <!-- ✅ 初期表示用タイトル -->
+    <div id="default-title" class="default-title">
+      <h1>おいしい秋を味わおう！！！</h1>
+      <p>
+        秋のよくばりお月見メーカー<br>
+        2025年限定!<br>
+        ごはん、スイーツ、グッズの<br>
+        “月見堪能”アプリ
+      </p>
+    </div>
+
     <!-- 商品表示エリア（独立して配置） -->
     <div id="product-card" class="product-card" hidden></div>
+
     <div class="ui-layer">
       <div class="btn-row">
         <button class="img-btn" aria-label="デザート" onclick="onCategoryClick('dessert')">
