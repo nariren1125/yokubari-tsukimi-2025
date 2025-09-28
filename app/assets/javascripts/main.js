@@ -1,31 +1,22 @@
-// ===== Railsからデータを取得してDBに格納 =====
-window.DB = { meal: [], dessert: [], goods: [] };
+// ===== 商品データベース（静的ファイルから読み込み） =====
+const DB = {
+  dessert: typeof DESSERT_DATA !== "undefined" ? DESSERT_DATA.map(item => ({
+    ...item,
+    officialLink: item.officialLink || null
+  })) : [],
 
-async function fetchItems() {
-  try {
-    const res = await fetch("/items.json");
-    const items = await res.json();
+  meal: typeof MEAL_DATA !== "undefined" ? MEAL_DATA.map(item => ({
+    ...item,
+    officialLink: item.officialLink || null
+  })) : [],
 
-    // Railsから来るimgは相対パスなので、絶対パスに直す
-    const withImageUrl = items.map(i => ({
-      ...i,
-      img: i.img ? `/assets/${i.img}` : null
-    }));
+  goods: typeof GOODS_DATA !== "undefined" ? GOODS_DATA.map(item => ({
+    ...item,
+    officialLink: item.officialLink || null
+  })) : []
+};
 
-    // カテゴリごとに仕分け
-    window.DB = {
-      meal: withImageUrl.filter(i => i.category === "meal"),
-      dessert: withImageUrl.filter(i => i.category === "dessert"),
-      goods: withImageUrl.filter(i => i.category === "goods")
-    };
-
-    console.log("✅ DBロード完了:", window.DB);
-  } catch (err) {
-    console.error("❌ アイテム取得失敗:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", fetchItems);
+console.log("✅ DBロード完了:", DB);
 
 // ===== ユーティリティ =====
 function pickRandom(arr) {
@@ -36,9 +27,9 @@ function pickRandom(arr) {
 window.onCategoryClick = function(type) {
   console.log("onCategoryClick called with:", type);
 
-  const list = window.DB[type] || [];
+  const list = DB[type] || [];
   if (!list.length) {
-    showToast("準備中です");
+    alert("準備中です");
     return;
   }
 
@@ -47,16 +38,13 @@ window.onCategoryClick = function(type) {
 
   const card = document.getElementById("product-card");
   const defaultTitle = document.getElementById("default-title");
-
   if (defaultTitle) defaultTitle.style.display = "none";
 
   function buildCardContent(item) {
-    const imgTag = item.img
-      ? `<img src="${item.img}" alt="${item.name}">`
-      : "";
+    const imgTag = item.img ? `<img src="${item.img}" alt="${item.name}">` : "";
 
-    const officialContent = item.official_link
-      ? `<a href="${item.official_link}" target="_blank" class="official-link-btn">公式サイトへ</a>`
+    const officialContent = item.officialLink
+      ? `<a href="${item.officialLink}" target="_blank" class="official-link-btn">公式サイトへ</a>`
       : `<p class="no-link-note">公式リンクは準備中です</p>`;
 
     return `
@@ -84,21 +72,9 @@ window.onCategoryClick = function(type) {
     `;
   }
 
-  if (card.classList.contains("show")) {
-    card.classList.remove("show");
-    card.classList.add("hide");
-
-    card.addEventListener("transitionend", function handler() {
-      card.removeEventListener("transitionend", handler);
-      card.innerHTML = buildCardContent(item);
-      card.classList.remove("hide");
-      requestAnimationFrame(() => card.classList.add("show"));
-    });
-  } else {
-    card.innerHTML = buildCardContent(item);
-    card.hidden = false;
-    requestAnimationFrame(() => card.classList.add("show"));
-  }
+  card.innerHTML = buildCardContent(item);
+  card.hidden = false;
+  requestAnimationFrame(() => card.classList.add("show"));
 };
 
 // ✅ 閉じる処理
@@ -133,8 +109,9 @@ document.addEventListener("click", function(e) {
 
 // ✅ X投稿機能
 window.shareToX = function(item) {
-  const appUrl = `${window.location.origin}`;  // ← トップページに修正！
-  const text = `${item.tweet_text || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
+  const appUrl = `${window.location.origin}`;
+  const text = `${item.tweetText || "#お月見限定商品を楽しもう"}\n${item.name} をチェック！\n${appUrl}`;
   const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(appUrl)}`;
   window.open(url, "_blank", "width=550,height=420");
 };
+
