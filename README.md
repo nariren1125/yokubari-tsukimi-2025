@@ -1,24 +1,72 @@
-# README
+# 🍁 秋の欲張り月見メーカー
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+「秋の欲張り月見メーカー」は、  
+**秋限定の商品をガチャ形式で気軽に楽しめるミニWebアプリ**です。
 
-Things you may want to cover:
+👉 https://yokubari-tsukimi-2025.onrender.com
 
-* Ruby version
+---
 
-* System dependencies
+## 🎯 アプリ概要
 
-* Configuration
+秋になると、コンビニや飲食チェーンから数多くの期間限定商品が登場しますが、
 
-* Database creation
+- 情報を追いきれない  
+- 気づいたら販売が終わっていた  
+- 結局いつも同じ商品しか選ばない  
 
-* Database initialization
+といった経験から、  
+**「ランダムに秋限定商品が出てきたら楽しいのでは？」**という発想で開発しました。
 
-* How to run the test suite
+本アプリでは、  
+**計39種類の秋限定商品**をガチャ形式で表示し、  
+楽しみながら新しい商品と出会える体験を提供しています。
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## 🌕 こだわりポイント
 
-* ...
+- 🎲 **ガチャ形式のUI**  
+  直感的でワクワク感のある操作を重視
+
+- 📅 **発売期間・公式情報への導線**  
+  「見て終わり」ではなく、実際に行動につながる設計
+
+- 🍠 **情報価値を重視したミニアプリ**  
+  ネタ要素に寄りすぎず、「ちょっと得した」と感じられる体験を意識
+
+---
+
+## 🏃‍♂️ 制作背景
+
+本アプリは、  
+**RUNTEQのアプリ開発イベント**にて「秋」をテーマに個人開発しました。
+
+イベントでは、
+
+- ゲーム要素
+- 「秋あるある」
+- 焼き芋・秋刀魚などの連想系コンテンツ
+
+といったアプローチが多い中で、  
+**「ユーザーが少し良い情報を知れたと思える体験」**を  
+裏テーマとして設計しています。
+
+限られた開発期間の中で、
+
+- テーマ選定
+- 情報設計
+- UI / UX
+
+を意識しながら実装しました。
+
+---
+
+## 🛠 使用技術
+
+- Ruby on Rails
+- HTML / CSS
+- JavaScript
+- Render（デプロイ）
+
+---
